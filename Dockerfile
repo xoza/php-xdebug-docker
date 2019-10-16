@@ -1,4 +1,4 @@
-FROM php:7.2-cli-alpine3.7
+FROM php:7.3.10-cli-alpine
 
 RUN apk update \
     && apk upgrade \
