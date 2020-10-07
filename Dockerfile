@@ -7,3 +7,5 @@ RUN apk update \
     && pecl install xdebug \
     && docker-php-ext-enable xdebug \
     && docker-php-ext-install pdo pdo_pgsql simplexml soap
+
+COPY --from=composer /usr/bin/composer /usr/bin/composer
