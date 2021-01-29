@@ -1,7 +1,12 @@
 FROM php:7.4.14-fpm-alpine
 
-ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+RUN apk update \
+    && apk upgrade \
+    && apk add --no-cache $PHPIZE_DEPS \
+    && apk add php7-curl postgresql-dev libxml2-dev zlib-dev libzip-dev libpng-dev \
+    && pecl install xdebug \
+    && docker-php-ext-enable xdebug \
+    && docker-php-ext-configure zip --with-libzip \
+    && docker-php-ext-install pdo pdo_pgsql simplexml soap bcmath calendar zip gd
 
-RUN chmod +x /usr/local/bin/install-php-extensions \
-	&& sync \
-	&& install-php-extensions pdo pdo_pgsql simplexml soap bcmath calendar zip gd xdebug @composer
+COPY --from=composer /usr/bin/composer /usr/bin/composer
